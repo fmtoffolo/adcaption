@@ -7,6 +7,7 @@ function createCanvas(options) {
     if (!options) {
         return Promise.reject(new Error('No canvas object'));
     }
+
     var canvasWidth = parseInt(options.width) || 500;
     var canvasHeight = parseInt(options.height) || 500;
 
@@ -22,6 +23,10 @@ function createCanvas(options) {
 }
 
 function addImage(ctx, options) {
+    if (!options) {
+        return Promise.resolve(ctx);
+    }
+
     return new Promise((resolve, reject) => {
 
         if (!ctx) {
@@ -85,6 +90,14 @@ function addImage(ctx, options) {
 }
 
 function addText(ctx, options) {
+    if (!options) {
+        return Promise.resolve(ctx);
+    }
+
+    if (!ctx) {
+        return Promise.reject(new Error('No context passed'));
+    }
+
     if (!options.text) {
         return Promise.reject(new Error('No text'));
     }
@@ -106,15 +119,11 @@ function addText(ctx, options) {
     return Promise.resolve(ctx);
 }
 
-
-
 function captionate(configuration) {
-    // console.log(configuration);
+
     var canvasOptions = configuration.filter(function(option) {
         return option.type === 'canvas';
     })[0];
-
-    // console.log(canvasOptions);
 
     if (!canvasOptions) {
         canvasOptions = {};
